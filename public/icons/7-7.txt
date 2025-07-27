@@ -1,0 +1,70 @@
+現在の場所
+/c/Users/nashi/malias-7-1
+
+フォルダの中身
+total 795
+-rw-r--r-- 1 nashi 197609      0 May 23 09:20 -H
+-rw-r--r-- 1 nashi 197609    754 May 23 09:20 -d
+drwxr-xr-x 1 nashi 197609      0 Jul  7 04:35 ./
+drwxr-xr-x 1 nashi 197609      0 Jul  6 23:01 ../
+-rw-r--r-- 1 nashi 197609    301 Jul  6 05:37 .env
+-rw-r--r-- 1 nashi 197609    193 Apr  2 00:14 .gitignore
+-rw-r--r-- 1 nashi 197609    345 Jun 16 18:23 .htaccess
+drwxr-xr-x 1 nashi 197609      0 Jul  7 04:35 .nuxt/
+drwxr-xr-x 1 nashi 197609      0 Jul  7 04:35 .output/
+-rw-r--r-- 1 nashi 197609    822 Apr  2 00:14 README.md
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:49 api/
+-rw-r--r-- 1 nashi 197609    210 Jul  3 17:45 app.vue
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:49 assets/
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:49 components/
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:49 composables/
+-rw-r--r-- 1 nashi 197609     72 May  8 07:19 csv
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:49 data/
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:49 dist/
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:49 helpers/
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:49 layouts/
+drwxr-xr-x 1 nashi 197609      0 Jul  7 04:24 node_modules/
+-rw-r--r-- 1 nashi 197609   1650 Jul  3 08:02 nuxt.config.ts
+-rw-r--r-- 1 nashi 197609 469142 Jul  7 04:24 package-lock.json
+-rw-r--r-- 1 nashi 197609    700 Jul  3 05:54 package.json
+drwxr-xr-x 1 nashi 197609      0 Jul  3 17:25 pages/
+-rw-r--r-- 1 nashi 197609    692 May 23 09:45 payload.json
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:51 plugins/
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:51 product-details/
+drwxr-xr-x 1 nashi 197609      0 Jul  5 17:45 public/
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:51 server/
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:51 src/
+drwxr-xr-x 1 nashi 197609      0 Jul  3 17:19 stores/
+-rw-r--r-- 1 nashi 197609    362 May 20 12:22 tailwind.config.ts
+-rw-r--r-- 1 nashi 197609     94 Apr  2 00:14 tsconfig.json
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:51 types/
+drwxr-xr-x 1 nashi 197609      0 Jul  3 05:51 utils/
+
+.output/public をさらに確認
+total 122
+drwxr-xr-x 1 nashi 197609     0 Jul  7 04:35 ./
+drwxr-xr-x 1 nashi 197609     0 Jul  7 04:35 ../
+-rw-r--r-- 1 nashi 197609 14335 Jul  7 04:35 200.html
+-rw-r--r-- 1 nashi 197609 14335 Jul  7 04:35 404.html
+drwxr-xr-x 1 nashi 197609     0 Jul  7 04:35 _nuxt/
+-rw-r--r-- 1 nashi 197609    69 Jul  7 04:35 _payload.json
+drwxr-xr-x 1 nashi 197609     0 Jul  7 04:35 contact/
+drwxr-xr-x 1 nashi 197609     0 Jul  7 04:35 dashboard/
+-rw-r--r-- 1 nashi 197609  4286 Apr  2 00:14 favicon.ico
+drwxr-xr-x 1 nashi 197609     0 Jul  7 04:35 icons/
+-rw-r--r-- 1 nashi 197609 43511 Jul  7 04:35 index.html
+drwxr-xr-x 1 nashi 197609     0 Jul  7 04:35 login/
+-rw-r--r-- 1 nashi 197609  4286 May 22 05:41 logo.png
+drwxr-xr-x 1 nashi 197609     0 Jul  7 04:35 option-images/
+drwxr-xr-x 1 nashi 197609     0 Jul  7 04:35 product-details/
+drwxr-xr-x 1 nashi 197609     0 Jul  7 04:35 products/
+-rw-r--r-- 1 nashi 197609    24 Jul  6 03:58 robots.txt
+
+実際のパスの例（Windowsなら）
+C:\Users\nashi\malias-7-1\.output\public
+
+次にすること
+
+この .output/public を丸ごとサーバーへアップロードします
+scp -r .output/public/* root@163.44.127.11:/var/www/html
+ 

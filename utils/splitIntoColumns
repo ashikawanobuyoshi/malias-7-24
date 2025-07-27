@@ -1,0 +1,5 @@
+export function splitIntoColumns<T>(items: T[] | null | undefined): [T[], T[]] {
+    if (!items) return [[], []];
+    const mid = Math.ceil(items.length / 2);
+    return [items.slice(0, mid), items.slice(mid)];
+  }

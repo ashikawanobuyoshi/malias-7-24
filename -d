@@ -1,0 +1,15 @@
+{
+  "error": true,
+  "url": "http://localhost:3000/api/send-order",
+  "statusCode": 500,
+  "statusMessage": "Server Error",
+  "message": "Cannot destructure property 'to' of 'body' as it is undefined.",
+  "stack": [
+    "Cannot destructure property 'to' of 'body' as it is undefined.",
+    "at Object.handler (C:/Users/nashi/malias-5-15/server/api/send-order.ts:7:1)",
+    "at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+    "at async file:///C:/Users/nashi/malias-5-15/node_modules/h3/dist/index.mjs:2003:19)",
+    "at async Object.callAsync (C:/Users/nashi/malias-5-15/node_modules/unctx/dist/index.mjs:72:16)",
+    "at async Server.toNodeHandle (C:/Users/nashi/malias-5-15/node_modules/h3/dist/index.mjs:2295:7)"
+  ]
+}

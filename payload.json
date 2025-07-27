@@ -1,0 +1,23 @@
+{
+  "personalizations": [
+    {
+      "to": [{ "email": "info@syashin8.com" }],
+      "subject": "注文確認メール"
+    }
+  ],
+  "from": { "email": "noreply@yourdomain.com" },
+  "content": [
+    {
+      "type": "text/html",
+      "value": "<p>ご注文ありがとうございます。PDFを添付しています。</p><p><strong>注文番号:</strong> 12345</p><ul><li>写真プリントA × 2</li><li>額縁B × 1</li></ul><p><strong>合計金額:</strong> ¥3,980</p>"
+    }
+  ],
+  "attachments": [
+    {
+      "content": "BASE64エンコードされたPDFデータ",
+      "filename": "order_12345.pdf",
+      "type": "application/pdf",
+      "disposition": "attachment"
+    }
+  ]
+}

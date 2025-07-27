@@ -1,75 +1,21 @@
-# Nuxt Minimal Starter
+#malias7-14
+Nuxt 3 によるモジュール構成を採用しています。
+## 主な機能
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+- お気に入りの画像登録（localStorage対応）
+- ズーム機能による画像の詳細表示
+- 認証による公開・非公開フォルダの切り替え
 
-## Setup
+## 使用技術
 
-Make sure to install dependencies:
+- Nuxt 3 / Vue.js
+- Pinia / medium-zoom / VueMagnifier
+- WordPress REST API
 
-```bash
-# npm
-npm install
+## 今後の展望
 
-# pnpm
-pnpm install
+- ユーザー認証を強化し、パーソナライズされたフォルダ表示を実現する
+- 画像キャッシュ機能により、表示速度の最適化
+- Vue 3 の Composition API に全面移行してよりモジュール化
 
-# yarn
-yarn install
 
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

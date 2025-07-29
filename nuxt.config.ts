@@ -83,11 +83,9 @@ export default defineNuxtConfig({
   },
 
   css: [
-    '@assets/css/main.css',
-    '@assets/css/variables.css',
-    '@assets/css/tailwind.css',
-    '@assets/css/print.css'
-  ],
+  '@/assets/css/main.css',
+  '@/assets/css/tailwind.css'
+],
 
   routeRules: {
     '/favorites/**': { prerender: false }

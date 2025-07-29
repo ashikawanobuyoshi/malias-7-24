@@ -36,10 +36,13 @@ export default defineNuxtConfig({
     onamaeSmtpPort: process.env.ONAMAE_SMTP_PORT,
     onamaeSmtpUser: process.env.ONAMAE_SMTP_USER,
     onamaeSmtpPass: process.env.ONAMAE_SMTP_PASS,
-    awsRegion: process.env.AWS_REGION,
     awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
     awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    s3BucketName: process.env.S3_BUCKET_NAME
+    s3BucketName: process.env.S3_BUCKET_NAME,
+    awsRegion: process.env.AWS_REGION || 'ap-northeast-1',
+    public: {
+      
+    }
   },
 
   future: { compatibilityVersion: 4 },

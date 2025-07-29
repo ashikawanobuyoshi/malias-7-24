@@ -84,6 +84,7 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth'
 import { ref, computed, onMounted, watch, watchEffect } from 'vue'
 import { useFavoritesStore } from '@/stores/favorites'
 import { useRouter } from 'vue-router'
@@ -138,6 +139,29 @@ watch([leftIndex, rightIndex], async () => {
 
 // ルーターとストアを取得
 const router = useRouter()
+const route = useRoute() 
+
+function goToGallery() {
+  if (folderInput.value.trim()) {
+    router.push({ path: '/malias', query: { folder: folderInput.value.trim() } })
+  }
+}
+onMounted(() => {
+  const folderFromQuery = route.query.folder
+  if (typeof folderFromQuery === 'string') {
+    fetchImages(folderFromQuery)
+  } else {
+    fetchImages(publicFolder.value)
+  }
+
+  const stored = localStorage.getItem('favoriteImages')
+  if (stored) {
+    const arr = JSON.parse(stored)
+    if (Array.isArray(arr)) {
+      favoritesStore.favoriteImages.splice(0, favoritesStore.favoriteImages.length, ...arr)
+    }
+  }
+})
 const favoritesStore = useFavoritesStore()
 const auth = useAuthStore()
 
@@ -272,6 +296,7 @@ async function fetchImages(folderName: string) {
   loading.value = true
   try {
     const res = await $fetch('/api/list-images', { params: { folder: folderName } })
+    
     imagesData.value = (res.images || []).map((i: any) => ({
       url: i.url,
       fileName: i.key?.split('/').pop() || '不明'

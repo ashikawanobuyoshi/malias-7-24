@@ -54,20 +54,19 @@ jobs:
       - name: Generate
         run: npm run generate
       - name: Validate kuroco_front.json
-        run: |
-          if [ -f "./.output/public/kuroco_front.json" ]; then
-            echo "kuroco_front.json found"
-            # JSON形式の検証
-            if jq empty ./.output/public/kuroco_front.json; then
-              echo "kuroco_front.json is valid JSON"
-            else
-              echo "Error: kuroco_front.json is not valid JSON"
-              exit 1
-            fi
-          else
-            echo "Error: kuroco_front.json not found in public folder"
-            exit 1
-          fi
+  run: |
+    if [ -f "./static/kuroco_front.json" ]; then
+      echo "kuroco_front.json found in static/"
+      if jq empty ./static/kuroco_front.json; then
+        echo "kuroco_front.json is valid JSON"
+      else
+        echo "Error: kuroco_front.json is not valid JSON"
+        exit 1
+      fi
+    else
+      echo "Error: kuroco_front.json not found in static/"
+      exit 1
+    fi
       - name: Zip artifact for upload
         run: cd ./.output/public && zip ../../dist.zip . -r
       - name: Archive Production Artifact

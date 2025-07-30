@@ -1,4 +1,5 @@
 name: Build and deploy to Kuroco front
+
 on:
   push:
     branches:
@@ -12,109 +13,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # for Pull Request (exclude merged)
-  pullreq_build:
-    name: Build(pullreq)
-    if: (github.repository == 'ashikawanobuyoshi/malias-7-24' && github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/kuroco stage') && github.event.issue.pull_request != null)
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: "Get branch name and sha"
-        id: get_branch
-        run: |
-          PR=$(curl -H "X-Kuroco-Auth: token fa824a353087e6ee3578efdf3ba5bd33" https://malias-2025-3-29.g.kuroco.app/direct/menu/github/?pr=${{ github.event.issue.pull_request.url }})
-          echo "branch=$(echo $PR | jq -r '.ref')" >> $GITHUB_OUTPUT
-          echo "sha=$(echo $PR | jq -r '.sha')" >> $GITHUB_OUTPUT
-      - name: Checkout Repo
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ steps.get_branch.outputs.branch }}
-          fetch-depth: 0
-        continue-on-error: true
-      - name: Fallback checkout if branch not found
-        if: failure()
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref || 'main' }}
-      - name: Use Node.js
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-      - name: CI Cache
+
+      - name: Cache node_modules
         uses: actions/cache@v4
-        id: node_modules_cache_id
-        env:
-          cache-name: cache-node-modules
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.ref_name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+
       - name: Install dependencies
-        if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
         run: npm ci
 
-      - name: Generate
+      - name: Generate project
         run: npm run generate
-      - name: Validate kuroco_front.json
-        run: |
-          if [ -f "./static/kuroco_front.json" ]; then
-            echo "kuroco_front.json found in static/"
-            if jq empty ./static/kuroco_front.json; then
-              echo "kuroco_front.json is valid JSON"
-            else
-              echo "Error: kuroco_front.json is not valid JSON"
-              exit 1
-            fi
-          else
-            echo "Error: kuroco_front.json not found in static/"
-            exit 1
-          fi
-      - name: Zip artifact for upload
-        run: cd ./.output/public && zip ../../dist.zip . -r
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ steps.get_branch.outputs.sha }}-${{ github.run_id }}
-          path: dist.zip
-          retention-days: 1
-      - name: Wait for Artifact download
-        run: sleep 15
-      - name: Webhook
-        uses: diverta/workflow-webhook@v3
-        with:
-          webhook_url: "https://malias-2025-3-29.g.kuroco.app/direct/menu/github/"
-          webhook_secret: "fa824a353087e6ee3578efdf3ba5bd33"
-          data: '{"single_zip":"1","domain":"malias-2025-3-29.g.kuroco-front.app","pr":"${{ github.event.issue.pull_request.url }}",  "repository":"${{ github.repository }}", "run_id":"${{ github.run_id }}", "hash":"${{ steps.get_branch.outputs.sha }}"}'
-          
-  #for Push
-  pushed_build:
-    name: Build(pushed)
-    if: (github.repository == 'ashikawanobuyoshi/malias-7-24' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch'))
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18.x'
-      - name: CI Cache
-        uses: actions/cache@v4
-        id: node_modules_cache_id
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.ref_name }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
-        run: npm ci
 
-      - name: Generate
-        run: npm run generate
-      - name: Validate kuroco_front.json
+      - name: Validate kuroco_front.json exists and is valid JSON
         run: |
           if [ -f "./.output/public/kuroco_front.json" ]; then
             echo "kuroco_front.json found"
-            # JSON形式の検証
             if jq empty ./.output/public/kuroco_front.json; then
               echo "kuroco_front.json is valid JSON"
             else
@@ -122,20 +47,23 @@ jobs:
               exit 1
             fi
           else
-            echo "Error: kuroco_front.json not found in public folder"
+            echo "Error: kuroco_front.json not found in .output/public folder"
             exit 1
           fi
+
       - name: Zip artifact for upload
         run: cd ./.output/public && zip ../../dist.zip . -r
-      - name: Archive Production Artifact
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.sha }}-${{ github.run_id }}
+          name: dist-artifact-${{ github.sha }}
           path: dist.zip
           retention-days: 7
-      - name: Webhook
+
+      - name: Trigger webhook
         uses: diverta/workflow-webhook@v3
         with:
           webhook_url: "https://malias-2025-3-29.g.kuroco.app/direct/menu/github/"
           webhook_secret: "fa824a353087e6ee3578efdf3ba5bd33"
-          data: '{"single_zip":"1","domain":"malias-2025-3-29.g.kuroco-front.app", "repository":"${{ github.repository }}", "run_id":"${{ github.run_id }}", "hash":"${{ github.sha }}"}'
+          data: '{"single_zip":"1","domain":"malias-2025-3-29.g.kuroco-front.app","repository":"${{ github.repository }}","run_id":"${{ github.run_id }}","hash":"${{ github.sha }}"}'

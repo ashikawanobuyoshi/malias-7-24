@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -25,11 +26,13 @@ jobs:
 
       - name: Validate kuroco_front.json exists
         run: |
-          if [ ! -f ./public/kuroco_front.json ]; then
-            echo "Error: kuroco_front.json not found!"
-            exit 1
+          if [ -f ./public/kuroco_front.json ]; then
+            echo "kuroco_front.json found in ./public"
+          elif [ -f ./.output/public/kuroco_front.json ]; then
+            echo "kuroco_front.json found in .output/public"
           else
-            echo "kuroco_front.json found."
+            echo "Error: kuroco_front.json not found in either location!"
+            exit 1
           fi
 
       - name: Zip artifact for upload

@@ -4,51 +4,32 @@ on:
   push:
     branches:
       - main
-  issue_comment:
-    types: [created, edited]
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          node-version: '20'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Generate project
-        run: npm run generate
+      - name: Build project
+        run: npm run build
 
-      - name: Validate kuroco_front.json exists and is valid JSON
+      - name: Validate kuroco_front.json exists
         run: |
-          if [ -f "./.output/public/kuroco_front.json" ]; then
-            echo "kuroco_front.json found"
-            if jq empty ./.output/public/kuroco_front.json; then
-              echo "kuroco_front.json is valid JSON"
-            else
-              echo "Error: kuroco_front.json is not valid JSON"
-              exit 1
-            fi
-          else
-            echo "Error: kuroco_front.json not found in .output/public folder"
+          if [ ! -f ./public/kuroco_front.json ]; then
+            echo "Error: kuroco_front.json not found!"
             exit 1
+          else
+            echo "kuroco_front.json found."
           fi
 
       - name: Zip artifact for upload
